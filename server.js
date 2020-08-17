@@ -50,6 +50,6 @@ app.put('/wishlist/add', function(req, res) {
   });
 });
 
-app.listen(3000, function() {
-  console.log("Store API running on port 3000...");
+app.listen(3001, function() {
+  console.log("Store API running on port 3001...");
 });
