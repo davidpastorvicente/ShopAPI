@@ -1,11 +1,13 @@
 var app = require('express')();
 var bp = require('body-parser');
 var mng = require('mongoose');
-var db = mng.connect('mongodb://localhost/shop')
+var cors = require('cors');
+var db = mng.connect('mongodb://localhost/shop');
 
 var Product = require('./model/product');
 var Wishlist =  require('./model/wishlist');
 
+app.use(cors())
 app.use(bp.json());
 app.use(bp.urlencoded({extended: false}));
 
