@@ -7,7 +7,7 @@ var db = mng.connect('mongodb://localhost/shop');
 var Product = require('./model/product');
 var Wishlist =  require('./model/wishlist');
 
-app.use(cors())
+app.use(cors());
 app.use(bp.json());
 app.use(bp.urlencoded({extended: false}));
 
