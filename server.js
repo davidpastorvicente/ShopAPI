@@ -34,7 +34,7 @@ app.post('/wishlist', function(req, res) {
 });
 
 app.get('/wishlist', function(req, res) {
-  Wishlist.find({}, function(err, wish) {
+  Wishlist.find({}).populate({path: 'products', model: 'Product'}).exec(function(err, wish) {
     if(err) res.status(500).send({error: 'Could not display'});
     else res.status(200).send(wish);
   });
