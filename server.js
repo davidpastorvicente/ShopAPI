@@ -45,9 +45,22 @@ app.get('/wishlist', function(req, res) {
 app.put('/wishlist/add', function(req, res) {
   Product.findOne({_id: req.body.productId}, function(err, prod) {
     if(err) res.status(500).send({error: 'Could not find the product'});
-    else Wishlist.update({_id: req.body.wishlistId}, {$addToSet: {products: prod._id}}, function(err, wish) {
+    else Wishlist.findOne({_id: req.body.wishlistId}, function(err, wish) {
       if(err) res.status(500).send({error: 'Could not find the wishlist'});
-      else res.status(200).send(wish);
+      else wish.update({$addToSet: {products: prod._id}}, function(err, resp) {
+        if(err) res.status(500).send({error: 'Could not add the product'});
+        else res.status(200).send(resp);
+      });
+    });
+  });
+});
+
+app.delete('/wishlist/del', function(req, res) {
+  Wishlist.findOne({_id: req.body.wishlistId}, function(err, wish) {
+    if(err) res.status(500).send({error: 'Could not find the wishlist'});
+    else wish.update({$pull: {products: req.body.productId}}, function(err, resp) {
+      if(err) res.status(500).send({error: 'Could not delete the product'});
+      else res.status(200).send(resp);
     });
   });
 });
