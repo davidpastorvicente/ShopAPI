@@ -2,6 +2,9 @@ var app = require('express')();
 var bp = require('body-parser');
 var mng = require('mongoose');
 var cors = require('cors');
+
+mng.set('useNewUrlParser', true);
+mng.set('useUnifiedTopology', true);
 var db = mng.connect('mongodb://localhost/shop');
 
 var Product = require('./model/product');
