@@ -14,6 +14,13 @@ app.use(cors());
 app.use(bp.json());
 app.use(bp.urlencoded({extended: false}));
 
+app.get('/product', function(req, res) {
+  Product.find({}, function(err, prod) {
+    if(err) res.status(500).send({error: 'Could not display the product'});
+    else res.status(200).send(prod);
+  });
+});
+
 app.post('/product', function(req, res) {
   var product = new Product(req.body);
   product.save(function(err, prod) {
@@ -22,10 +29,10 @@ app.post('/product', function(req, res) {
   })
 });
 
-app.get('/product', function(req, res) {
-  Product.find({}, function(err, prod) {
-    if(err) res.status(500).send({error: 'Could not display the product'});
-    else res.status(200).send(prod);
+app.get('/wishlist', function(req, res) {
+  Wishlist.find({}).populate({path: 'products', model: 'Product'}).exec(function(err, wish) {
+    if(err) res.status(500).send({error: 'Could not display the wishlist'});
+    else res.status(200).send(wish);
   });
 });
 
@@ -38,9 +45,9 @@ app.post('/wishlist', function(req, res) {
   });
 });
 
-app.get('/wishlist', function(req, res) {
-  Wishlist.find({}).populate({path: 'products', model: 'Product'}).exec(function(err, wish) {
-    if(err) res.status(500).send({error: 'Could not display the wishlist'});
+app.put('/wishlist', function(req, res) {
+  Wishlist.update({_id: req.body.wishlistId}, {title: req.body.title}, function(err, wish) {
+    if(err) res.status(500).send({error: 'Could not modify the wishlist'});
     else res.status(200).send(wish);
   });
 });
